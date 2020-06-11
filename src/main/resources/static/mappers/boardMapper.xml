@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.ac.inhatc.mvc.mapper.BoardMapper">	
+	<select id="selectSubjectList" parameterType="String"
+		resultType="Map">
+		select id, subject, grade, description, use_yn useYn,
+		reg_user regUser
+		from sample
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="searchKeyword !=null and searchKeyword !=''">
+				<if test="searchType == 0">
+					and reg_user = #{searchKeyword}
+				</if>
+				
+				<if test="searchType == 1">
+					and subject like CONCAT('%', #{searchKeyword}, '%')
+				</if>
+			</if>
+		</trim>
+		order by id desc
+		limit #{startList}, #{listSize}
+	</select>
+	
+	<select id="getSubjectListCnt" resultType="java.lang.Integer">
+		select count(*) as listCnt from sample
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="searchKeyword !=null and searchKeyword !=''">
+				<if test="searchType == 0">
+					and reg_user = #{searchKeyword}
+				</if>
+				
+				<if test="searchType == 1">
+					and subject like CONCAT('%', #{searchKeyword}, '%')
+				</if>
+			</if>
+		</trim>
+	</select>	
+	
+	<select id="selectSubjectOne" parameterType="String" resultType="Map">
+		select id, subject, grade, description, use_yn useYn,
+		reg_user regUser
+		from sample
+		where id = #{value}
+	</select>
+
+	<insert id="regSubject">
+		insert into sample
+		(subject, grade, use_yn,
+		description, reg_user)
+		values(#{subject}, #{grade}, #{useYn},
+		#{description}, #{regUser})
+	</insert>	
+
+	
+
+	<update id="modifyBoardDetail">
+		update sample
+		set
+		subject = #{subject},
+		grade = #{grade},
+		use_yn = #{useYn},
+		description = #{description},
+		reg_user = #{regUser}
+		where id = #{id}
+	</update>
+
+	<delete id="deleteBoardDetail" parameterType="String">
+		delete from sample
+		where id = #{value}
+	</delete>
+
+</mapper>
