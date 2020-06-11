@@ -15,10 +15,13 @@ import kr.ac.inhatc.mvc.dto.BoardDto;
 import kr.ac.inhatc.mvc.dto.SearchDto;
 import kr.ac.inhatc.mvc.service.BoardService;
 
+
 @Controller
-public class BoardController {
+public class BoardController {	
 	@Autowired
 	BoardService boardService;
+	
+	int hit = 0;
 	
 	//게시글 불러오기
 	@RequestMapping(value = "selectSubjectList", method = RequestMethod.GET)
@@ -28,7 +31,6 @@ public class BoardController {
 			@RequestParam(required=false) String searchKeyword
 			) throws Exception {
 		
-		int hit = 0;
 		hit++;
 		
 		SearchDto searchDto = new SearchDto();		
